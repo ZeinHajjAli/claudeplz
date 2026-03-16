@@ -82,3 +82,7 @@ require("claudeplz").send("explain this codebase")
 ## Health check
 
 Run `:checkhealth claudeplz` to verify your setup — it checks the Neovim version, that the `claude` binary is reachable, and that the plugin is configured correctly.
+
+## License
+
+MIT
