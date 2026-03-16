@@ -1,0 +1,167 @@
+*claudeplz.txt*  Embed Claude Code in Neovim and send buffer context to it
+
+==============================================================================
+CONTENTS                                                    *claudeplz-contents*
+
+  1. Introduction ................................. |claudeplz-introduction|
+  2. Requirements ................................. |claudeplz-requirements|
+  3. Installation ................................. |claudeplz-installation|
+  4. Setup ........................................ |claudeplz-setup|
+  5. Keymaps ...................................... |claudeplz-keymaps|
+  6. Auto-reload .................................. |claudeplz-auto-reload|
+  7. Lua API ...................................... |claudeplz-api|
+  8. Health check ................................. |claudeplz-health|
+
+==============================================================================
+1. INTRODUCTION                                         *claudeplz-introduction*
+
+claudeplz is a minimal Neovim plugin that embeds a Claude Code terminal
+session directly in your editor. It lets you send context from your buffers -
+files, selections, and LSP diagnostics - to Claude with a single keymap.
+
+Each Neovim tab gets its own independent Claude session. Opening a session on
+a tab that already has one focuses the existing window instead of creating a
+new one.
+
+==============================================================================
+2. REQUIREMENTS                                         *claudeplz-requirements*
+
+  - Neovim >= 0.8
+  - `claude` CLI installed and available in $PATH
+
+==============================================================================
+3. INSTALLATION                                         *claudeplz-installation*
+
+lazy.nvim ~
+>lua
+  {
+    "zeinhajjali/claudeplz",
+    config = function()
+      require("claudeplz").setup()
+    end,
+  }
+<
+
+==============================================================================
+4. SETUP                                                       *claudeplz-setup*
+
+Call `setup()` to initialise the plugin. All options are optional; the
+defaults are shown below.
+>lua
+  require("claudeplz").setup({
+    auto_reload = true,        -- auto-reload buffers when Claude edits files
+    mappings = {
+      split     = '<leader>c"',  -- open Claude in a horizontal split
+      vsplit    = "<leader>c%",  -- open Claude in a vertical split
+      send_file = "<leader>cf",  -- send the current file
+      send_sel  = "<leader>cs",  -- send the visual selection (visual mode)
+      send_diag = "<leader>cd",  -- send LSP diagnostics for the current buffer
+    },
+  })
+<
+
+Set any mapping key to `false` to disable it: >lua
+
+  require("claudeplz").setup({
+    mappings = {
+      split = false,  -- don't bind the horizontal-split key
+    },
+  })
+<
+
+------------------------------------------------------------------------------
+OPTIONS                                                    *claudeplz-options*
+
+                                                          *claudeplz.auto_reload*
+auto_reload ~
+  Type: `boolean`  Default: `true`
+
+  When `true`, sets Neovim's `autoread` option and installs an autocommand
+  group (`ClaudeplzAutoReload`) that calls `:checktime` on the following
+  events: `CursorHold`, `CursorHoldI`, `FocusGained`, `BufEnter`,
+  `TermLeave`, `TermEnter`, `BufWinEnter`.
+
+  This ensures files that Claude writes to disk are immediately reflected in
+  your open buffers without any manual `:e` or `:checktime`.
+
+                                                           *claudeplz.mappings*
+mappings ~
+  Type: `table`  Default: see |claudeplz-keymaps|
+
+  A table of keymap strings (or `false` to disable). Each key corresponds to
+  one action. See |claudeplz-keymaps| for the full list.
+
+==============================================================================
+5. KEYMAPS                                                   *claudeplz-keymaps*
+
+Opening a session ~
+
+  Default key       Mode   Action
+  ─────────────────────────────────────────────────────────────────
+  `<leader>c"`      Normal  Open Claude in a horizontal split
+  `<leader>c%`      Normal  Open Claude in a vertical split
+
+  If a session is already open on the current tab, the keymap focuses that
+  window instead of opening a second one.
+
+Sending context ~
+
+  Default key       Mode   What gets sent
+  ─────────────────────────────────────────────────────────────────
+  `<leader>cf`      Normal  The entire current file in a fenced code block
+  `<leader>cs`      Visual  The selected text in a fenced code block
+  `<leader>cd`      Normal  All LSP diagnostics for the current buffer
+
+  Context is sent to the active Claude session on the current tab. If no
+  session is open, a warning notification is shown.
+
+==============================================================================
+6. AUTO-RELOAD                                           *claudeplz-auto-reload*
+
+With `auto_reload = true` (the default), claudeplz enables Neovim's built-in
+`autoread` and registers an autocommand that runs `:checktime` whenever focus
+returns to a normal buffer. Files modified by Claude are refreshed
+automatically without any manual intervention.
+
+Set `auto_reload = false` in |claudeplz-setup| to opt out.
+
+==============================================================================
+7. LUA API                                                       *claudeplz-api*
+
+                                                            *claudeplz.setup()*
+require("claudeplz").setup({opts})
+
+  Initialises the plugin. See |claudeplz-setup| for the full option table.
+  Must be called before any mappings or auto-reload will be active.
+
+                                                             *claudeplz.send()*
+require("claudeplz").send({text})
+
+  Sends {text} directly to the active Claude session on the current tab.
+  If no session is open, a warning notification is shown.
+
+  Parameters:
+    {text}  (string)  Arbitrary text to send to the Claude terminal.
+
+  Example: >lua
+    require("claudeplz").send("explain this codebase\n")
+<
+
+==============================================================================
+8. HEALTH CHECK                                             *claudeplz-health*
+
+Run the built-in health checker to verify your setup: >vim
+)
+  :checkhealth claudeplz
+<
+
+The check reports:
+
+  - Whether Neovim >= 0.8 is in use
+  - Whether the `claude` binary is reachable in $PATH (and its version)
+  - Whether `claudeplz.session` loaded successfully
+  - Whether there is an active session on the current tab
+  - Whether `setup()` was called and which mappings are active
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:
