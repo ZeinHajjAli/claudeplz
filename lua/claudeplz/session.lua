@@ -34,7 +34,10 @@ M.start = function(split_cmd)
 	local term_win = vim.api.nvim_get_current_win()
 	local term_buf = vim.api.nvim_get_current_buf()
 
-	local job_id = vim.fn.jobstart("claude", {
+	local config = require("claudeplz.config")
+	local args = config.values.cli_args or {}
+	local cmd = vim.list_extend({ "claude" }, args)
+	local job_id = vim.fn.jobstart(cmd, {
 		term = true,
 		cwd = vim.fn.getcwd(),
 		on_exit = function(_, exit_code, _)

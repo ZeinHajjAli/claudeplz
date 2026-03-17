@@ -51,6 +51,7 @@ defaults are shown below.
 >lua
   require("claudeplz").setup({
     auto_reload = true,        -- auto-reload buffers when Claude edits files
+    cli_args = {},             -- extra arguments passed to the `claude` CLI
     mappings = {
       split          = '<leader>c"',   -- open Claude in a horizontal split
       vsplit         = "<leader>c%",   -- open Claude in a vertical split
@@ -86,6 +87,19 @@ auto_reload ~
 
   This ensures files that Claude writes to disk are immediately reflected in
   your open buffers without any manual `:e` or `:checktime`.
+
+                                                           *claudeplz.cli_args*
+cli_args ~
+  Type: `table`  Default: `{}`
+
+  A list of extra command-line arguments appended to the `claude` invocation.
+  Useful for automated or demo environments where interactive prompts must be
+  suppressed. Example: >lua
+
+    require("claudeplz").setup({
+      cli_args = { "--dangerously-skip-permissions" },
+    })
+<
 
                                                            *claudeplz.mappings*
 mappings ~

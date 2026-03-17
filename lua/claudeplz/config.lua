@@ -2,6 +2,7 @@ local M = {}
 
 M.defaults = {
 	auto_reload = true,
+	cli_args = {},
 	mappings = {
 		split = '<leader>c"',
 		vsplit = "<leader>c%",

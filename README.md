@@ -26,6 +26,7 @@ Call `setup()` with optional overrides. All options shown below are their defaul
 ```lua
 require("claudeplz").setup({
   auto_reload = true,   -- auto-reload buffers when Claude writes to disk
+  cli_args = {},        -- extra arguments passed to the `claude` CLI
   mappings = {
     split          = '<leader>c"',   -- open Claude in a horizontal split
     vsplit         = "<leader>c%",   -- open Claude in a vertical split
@@ -35,6 +36,14 @@ require("claudeplz").setup({
     send_diff      = "<leader>cD",   -- send the full git diff (all staged/unstaged changes)
     send_file_diff = "<leader>cdd",  -- send the git diff for the current file only
   },
+})
+```
+
+Pass extra flags to the `claude` CLI (e.g. for automated/demo environments):
+
+```lua
+require("claudeplz").setup({
+  cli_args = { "--dangerously-skip-permissions" },
 })
 ```
 
