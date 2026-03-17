@@ -17,7 +17,8 @@ CONTENTS                                                    *claudeplz-contents*
 
 claudeplz is a minimal Neovim plugin that embeds a Claude Code terminal
 session directly in your editor. It lets you send context from your buffers -
-files, selections, and LSP diagnostics - to Claude with a single keymap.
+files, selections, LSP diagnostics, and git diffs - to Claude with a single
+keymap.
 
 Each Neovim tab gets its own independent Claude session. Opening a session on
 a tab that already has one focuses the existing window instead of creating a
@@ -51,11 +52,13 @@ defaults are shown below.
   require("claudeplz").setup({
     auto_reload = true,        -- auto-reload buffers when Claude edits files
     mappings = {
-      split     = '<leader>c"',  -- open Claude in a horizontal split
-      vsplit    = "<leader>c%",  -- open Claude in a vertical split
-      send_file = "<leader>cf",  -- send the current file
-      send_sel  = "<leader>cs",  -- send the visual selection (visual mode)
-      send_diag = "<leader>cd",  -- send LSP diagnostics for the current buffer
+      split          = '<leader>c"',   -- open Claude in a horizontal split
+      vsplit         = "<leader>c%",   -- open Claude in a vertical split
+      send_file      = "<leader>cf",   -- send the current file
+      send_sel       = "<leader>cs",   -- send the visual selection (visual mode)
+      send_diag      = "<leader>cd",   -- send LSP diagnostics for the current buffer
+      send_diff      = "<leader>cD",   -- send the full git diff
+      send_file_diff = "<leader>cdd",  -- send the git diff for the current file
     },
   })
 <
@@ -111,6 +114,11 @@ Sending context ~
   `<leader>cf`      Normal  The entire current file in a fenced code block
   `<leader>cs`      Visual  The selected text in a fenced code block
   `<leader>cd`      Normal  All LSP diagnostics for the current buffer
+  `<leader>cD`      Normal  The full `git diff` (all staged/unstaged changes)
+  `<leader>cdd`     Normal  The `git diff` for the current file only
+
+  The diff keymaps require `git` to be installed and the working directory to
+  be inside a git repository. See |claudeplz-health| to verify this.
 
   Context is sent to the active Claude session on the current tab. If no
   session is open, a warning notification is shown.
@@ -159,6 +167,8 @@ The check reports:
 
   - Whether Neovim >= 0.8 is in use
   - Whether the `claude` binary is reachable in $PATH (and its version)
+  - Whether `git` is installed and the current directory is a git repository
+    (required for `send_diff` / `send_file_diff`)
   - Whether `claudeplz.session` loaded successfully
   - Whether there is an active session on the current tab
   - Whether `setup()` was called and which mappings are active
