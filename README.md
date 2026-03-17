@@ -15,48 +15,55 @@ https://github.com/user-attachments/assets/d934c50f-1f1b-42be-a325-a852513d32f0
 ```lua
 {
   "zeinhajjali/claudeplz",
-  config = function()
-    require("claudeplz").setup()
-  end,
+  opts = {},
 }
 ```
 
 ## Setup
 
-Call `setup()` with optional overrides. All options shown below are their defaults:
+Pass options via `opts` in your lazy.nvim spec. All options shown below are their defaults:
 
 ```lua
-require("claudeplz").setup({
-  auto_reload = true,   -- auto-reload buffers when Claude writes to disk
-  cli_args = {},        -- extra arguments passed to the `claude` CLI
-  mappings = {
-    split          = '<leader>c"',   -- open Claude in a horizontal split
-    vsplit         = "<leader>c%",   -- open Claude in a vertical split
-    send_file      = "<leader>cf",   -- send the current file
-    send_sel       = "<leader>cs",   -- send the visual selection  (visual mode)
-    send_diag      = "<leader>cd",   -- send LSP diagnostics for the current buffer
-    send_diff      = "<leader>cD",   -- send the full git diff (all staged/unstaged changes)
-    send_file_diff = "<leader>cdd",  -- send the git diff for the current file only
+{
+  "zeinhajjali/claudeplz",
+  opts = {
+    auto_reload = true,   -- auto-reload buffers when Claude writes to disk
+    cli_args = {},        -- extra arguments passed to the `claude` CLI
+    mappings = {
+      split          = '<leader>c"',   -- open Claude in a horizontal split
+      vsplit         = "<leader>c%",   -- open Claude in a vertical split
+      send_file      = "<leader>cf",   -- send the current file
+      send_sel       = "<leader>cs",   -- send the visual selection  (visual mode)
+      send_diag      = "<leader>cd",   -- send LSP diagnostics for the current buffer
+      send_diff      = "<leader>cD",   -- send the full git diff (all staged/unstaged changes)
+      send_file_diff = "<leader>cdd",  -- send the git diff for the current file only
+    },
   },
-})
+}
 ```
 
 Pass extra flags to the `claude` CLI (e.g. for automated/demo environments):
 
 ```lua
-require("claudeplz").setup({
-  cli_args = { "--dangerously-skip-permissions" },
-})
+{
+  "zeinhajjali/claudeplz",
+  opts = {
+    cli_args = { "--dangerously-skip-permissions" },
+  },
+}
 ```
 
 Set any mapping to `false` to disable it:
 
 ```lua
-require("claudeplz").setup({
-  mappings = {
-    split = false,  -- don't bind the horizontal split key
+{
+  "zeinhajjali/claudeplz",
+  opts = {
+    mappings = {
+      split = false,  -- don't bind the horizontal split key
+    },
   },
-})
+}
 ```
 
 ## Usage
