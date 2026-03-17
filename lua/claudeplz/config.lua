@@ -8,6 +8,8 @@ M.defaults = {
 		send_file = "<leader>cf",
 		send_sel = "<leader>cs",
 		send_diag = "<leader>cd",
+		send_diff = "<leader>cD",
+		send_file_diff = "<leader>cdd",
 	},
 }
 

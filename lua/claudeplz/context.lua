@@ -61,4 +61,35 @@ M.from_diagnostics = function()
 	return "\n" .. table.concat(parts, "\n") .. "\n"
 end
 
+M.from_diff = function(opts)
+	opts = opts or {}
+
+	local cmd
+	if opts.file then
+		cmd = "git diff HEAD " .. vim.fn.shellescape(opts.file)
+	elseif opts.staged then
+		cmd = "git diff --staged"
+	else
+		cmd = "git diff HEAD"
+	end
+
+	local result = vim.fn.system(cmd)
+
+	if vim.v.shell_error ~= 0 then
+		vim.notify("git diff failed: " .. result, vim.log.levels.WARN)
+		return nil
+	end
+
+	if result == "" then
+		vim.notify("No changes to diff", vim.log.levels.INFO)
+		return nil
+	end
+
+	return string.format("\n```diff\n%s\n```\n", result)
+end
+
+M.from_file_diff = function()
+	return M.from_diff({ file = vim.fn.expand("%") })
+end
+
 return M

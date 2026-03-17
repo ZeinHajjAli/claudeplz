@@ -41,6 +41,16 @@ M.apply_mappings = function(mappings)
 			send(context.from_diagnostics, "No diagnostics in current buffer.")
 		end, "send diagnostics")
 	end
+	if mappings.send_diff ~= false then
+		map("n", mappings.send_diff, function()
+			send(context.from_diff, "No diff available.")
+		end, "send git diff")
+	end
+	if mappings.send_file_diff ~= false then
+		map("n", mappings.send_file_diff, function()
+			send(context.from_file_diff, "No diff for current file.")
+		end, "send current file git diff")
+	end
 end
 
 return M

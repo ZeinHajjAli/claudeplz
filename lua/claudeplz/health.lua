@@ -23,6 +23,18 @@ M.check = function()
 		)
 	end
 
+	if vim.fn.executable("git") == 1 then
+		local is_git_repo = vim.fn.system("git rev-parse --is-inside-work-tree 2>/dev/null"):gsub("%s+$", "")
+		if is_git_repo == "true" then
+			vim.health.ok("git found, inside a git repo")
+		else
+			vim.health.ok("git found")
+			vim.health.warn("not inside a git repo", "send_diff and send_file_diff will not work")
+		end
+	else
+		vim.health.warn("git not found", "send_diff and send_file_diff features will not work")
+	end
+
 	local ok, session = pcall(require, "claudeplz.session")
 	if ok then
 		vim.health.ok("claudeplz.session loaded")
