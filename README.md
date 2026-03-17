@@ -2,6 +2,8 @@
 
 A minimal Neovim plugin that embeds a [Claude Code](https://claude.ai/code) terminal session directly in your editor and lets you send context from your buffers - files, selections, LSP diagnostics, and git diffs - with a single keymap.
 
+https://github.com/user-attachments/assets/d934c50f-1f1b-42be-a325-a852513d32f0
+
 ## Requirements
 
 - Neovim >= 0.8
