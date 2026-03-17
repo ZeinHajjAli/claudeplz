@@ -7,6 +7,7 @@ end
 M.apply_mappings = function(mappings)
 	local session = require("claudeplz.session")
 	local context = require("claudeplz.context")
+	local config = require("claudeplz.config")
 
 	local function send(getter, warn)
 		local text = getter()
@@ -28,12 +29,16 @@ M.apply_mappings = function(mappings)
 	end
 	if mappings.send_file ~= false then
 		map("n", mappings.send_file, function()
-			send(context.from_file, "Could not read file.")
+			send(function()
+				return context.from_file({ tag_file = config.values.tag_file })
+			end, "Could not read file.")
 		end, "send current file")
 	end
 	if mappings.send_sel ~= false then
 		map("v", mappings.send_sel, function()
-			send(context.from_selection, "Nothing selected.")
+			send(function()
+				return context.from_selection({ tag_file = config.values.tag_file })
+			end, "Nothing selected.")
 		end, "send selection")
 	end
 	if mappings.send_diag ~= false then

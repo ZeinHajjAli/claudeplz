@@ -2,6 +2,7 @@ local M = {}
 
 M.defaults = {
 	auto_reload = true,
+	tag_file = true,
 	cli_args = {},
 	mappings = {
 		split = '<leader>c"',

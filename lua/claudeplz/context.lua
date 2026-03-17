@@ -34,17 +34,30 @@ local wrap_in_fence = function(content, filetype, label)
 	return string.format("\n%s\n```%s\n%s\n```\n", label, filetype, content)
 end
 
-M.from_selection = function()
+M.from_selection = function(opts)
+	opts = opts or {}
+
 	local sel = M.get_visual_selection()
 	if not sel then
 		return nil
 	end
-	return wrap_in_fence(sel, vim.bo.filetype, "from " .. vim.fn.expand("%:t"))
+
+	if opts.tag_file then
+		return wrap_in_fence(sel, vim.bo.filetype, "from @" .. vim.fn.expand("%:.") .. " ")
+	else
+		return wrap_in_fence(sel, vim.bo.filetype, "from " .. vim.fn.expand("%:t"))
+	end
 end
 
-M.from_file = function()
-	local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-	return wrap_in_fence(table.concat(lines, "\n"), vim.bo.filetype, vim.fn.expand("%:t"))
+M.from_file = function(opts)
+	opts = opts or {}
+
+	if opts.tag_file then
+		return "@" .. vim.fn.expand("%:.") .. " "
+	else
+		local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+		return wrap_in_fence(table.concat(lines, "\n"), vim.bo.filetype, vim.fn.expand("%:t"))
+	end
 end
 
 M.from_diagnostics = function()

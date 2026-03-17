@@ -51,6 +51,7 @@ the defaults are shown below.
     "zeinhajjali/claudeplz",
     opts = {
       auto_reload = true,        -- auto-reload buffers when Claude edits files
+      tag_file = true,           -- use @filepath mention syntax for file and selection context
       cli_args = {},             -- extra arguments passed to the `claude` CLI
       mappings = {
         split          = '<leader>c"',   -- open Claude in a horizontal split
@@ -92,6 +93,23 @@ auto_reload ~
   This ensures files that Claude writes to disk are immediately reflected in
   your open buffers without any manual `:e` or `:checktime`.
 
+                                                            *claudeplz.tag_file*
+tag_file ~
+  Type: `boolean`  Default: `true`
+
+  Controls how file context is sent to Claude for both `send_file` and
+  `send_sel`.
+
+  When `true`:
+  - `send_file` sends an `@full/path/to/file` mention instead of the full
+    file contents, letting Claude load the file directly.
+  - `send_sel` prefixes the selection with `@full/path/to/file` so Claude
+    knows which file the snippet came from.
+
+  When `false`:
+  - `send_file` sends the entire file contents wrapped in a fenced code block.
+  - `send_sel` labels the selection with a plain `from filename` header.
+
                                                            *claudeplz.cli_args*
 cli_args ~
   Type: `table`  Default: `{}`
@@ -132,8 +150,8 @@ Sending context ~
 
   Default key       Mode   What gets sent
   ─────────────────────────────────────────────────────────────────
-  `<leader>cf`      Normal  The entire current file in a fenced code block
-  `<leader>cs`      Visual  The selected text in a fenced code block
+  `<leader>cf`      Normal  @filepath mention (or full file in a fenced block if tag_file=false)
+  `<leader>cs`      Visual  Selection in a fenced block, prefixed with @filepath (or from filename)
   `<leader>cd`      Normal  All LSP diagnostics for the current buffer
   `<leader>cD`      Normal  The full `git diff` (all staged/unstaged changes)
   `<leader>cdd`     Normal  The `git diff` for the current file only

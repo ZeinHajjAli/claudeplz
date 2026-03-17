@@ -28,6 +28,7 @@ Pass options via `opts` in your lazy.nvim spec. All options shown below are thei
   "zeinhajjali/claudeplz",
   opts = {
     auto_reload = true,   -- auto-reload buffers when Claude writes to disk
+    tag_file = true,      -- use @filepath mention syntax for file and selection context
     cli_args = {},        -- extra arguments passed to the `claude` CLI
     mappings = {
       split          = '<leader>c"',   -- open Claude in a horizontal split
@@ -81,8 +82,8 @@ Each Neovim tab gets its own Claude session. Triggering the keymap again on a ta
 
 | Keymap | Mode | What gets sent |
 |--------|------|----------------|
-| `<leader>cf` | Normal | The entire current file, wrapped in a fenced code block |
-| `<leader>cs` | Visual | The selected text, wrapped in a fenced code block |
+| `<leader>cf` | Normal | `@filepath` mention (or full file in a fenced code block if `tag_file = false`) |
+| `<leader>cs` | Visual | The selected text in a fenced code block, prefixed with `@filepath` (or `from filename` if `tag_file = false`) |
 | `<leader>cd` | Normal | All LSP diagnostics for the current buffer |
 | `<leader>cD` | Normal | The full `git diff` (all staged and unstaged changes) |
 | `<leader>cdd` | Normal | The `git diff` for the current file only |
