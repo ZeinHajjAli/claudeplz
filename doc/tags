@@ -1,0 +1,17 @@
+claudeplz-api	claudeplz.txt	/*claudeplz-api*
+claudeplz-auto-reload	claudeplz.txt	/*claudeplz-auto-reload*
+claudeplz-contents	claudeplz.txt	/*claudeplz-contents*
+claudeplz-health	claudeplz.txt	/*claudeplz-health*
+claudeplz-installation	claudeplz.txt	/*claudeplz-installation*
+claudeplz-introduction	claudeplz.txt	/*claudeplz-introduction*
+claudeplz-keymaps	claudeplz.txt	/*claudeplz-keymaps*
+claudeplz-options	claudeplz.txt	/*claudeplz-options*
+claudeplz-requirements	claudeplz.txt	/*claudeplz-requirements*
+claudeplz-setup	claudeplz.txt	/*claudeplz-setup*
+claudeplz.auto_reload	claudeplz.txt	/*claudeplz.auto_reload*
+claudeplz.cli_args	claudeplz.txt	/*claudeplz.cli_args*
+claudeplz.mappings	claudeplz.txt	/*claudeplz.mappings*
+claudeplz.send()	claudeplz.txt	/*claudeplz.send()*
+claudeplz.setup()	claudeplz.txt	/*claudeplz.setup()*
+claudeplz.tag_file	claudeplz.txt	/*claudeplz.tag_file*
+claudeplz.txt	claudeplz.txt	/*claudeplz.txt*
